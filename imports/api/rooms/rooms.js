@@ -32,6 +32,10 @@ Rooms.schema = new SimpleSchema({
     type: String,
   },
 
+  state: {
+    type: String,
+  },
+
   battlingMemberIds: {
     type: [String],
     optional: true,

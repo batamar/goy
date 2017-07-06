@@ -12,7 +12,7 @@ export const add = new ValidatedMethod({
   },
 
   run({ doc }) {
-    return Rooms.insert(doc);
+    return Rooms.insert({ ...doc, state: 'started' });
   },
 });
 
@@ -100,5 +100,18 @@ export const rate = new ValidatedMethod({
     }
 
     return Rooms.update({ _id }, { $set: { battleRatings } });
+  },
+});
+
+// end
+export const end = new ValidatedMethod({
+  name: 'rooms.end',
+
+  validate({ _id }) {
+    check(_id, String);
+  },
+
+  run({ _id }) {
+    return Rooms.update({ _id }, { $set: { state: 'ended' } });
   },
 });

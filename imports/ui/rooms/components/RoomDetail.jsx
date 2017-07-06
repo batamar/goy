@@ -116,6 +116,12 @@ class RoomDetail extends React.Component {
     )
   }
 
+  renderSurrenderButton() {
+    if (this.props.isBattling) {
+      return <button onClick={this.props.surrender}>Surrender</button>
+    }
+  }
+
   render() {
     return (
       <div>
@@ -125,6 +131,7 @@ class RoomDetail extends React.Component {
         {this.renderMessages()}
         {this.renderMessageInput()}
         {this.renderRateButtons()}
+        {this.renderSurrenderButton()}
       </div>
 		);
   }
