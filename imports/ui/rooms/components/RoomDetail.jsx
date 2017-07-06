@@ -96,6 +96,26 @@ class RoomDetail extends React.Component {
     }
   }
 
+  // rate ============
+  renderRateButton(value) {
+    const userRate = this.props.userRate || {};
+
+    if (userRate.point !== value) {
+      return <button onClick={() => this.props.rate(value)}>{value}</button>
+    }
+  }
+
+  renderRateButtons() {
+    return (
+      <div>
+        {this.renderRateButton(1)}
+        {this.renderRateButton(2)}
+        {this.renderRateButton(3)}
+        {this.renderRateButton(4)}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div>
@@ -104,6 +124,7 @@ class RoomDetail extends React.Component {
         {this.renderBattleMembers()}
         {this.renderMessages()}
         {this.renderMessageInput()}
+        {this.renderRateButtons()}
       </div>
 		);
   }

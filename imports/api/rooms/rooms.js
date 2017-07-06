@@ -17,6 +17,16 @@ Rooms.messageSchema = new SimpleSchema({
   },
 });
 
+Rooms.rateSchema = new SimpleSchema({
+  point: {
+    type: Number,
+  },
+
+  userId: {
+    type: String,
+  },
+});
+
 Rooms.schema = new SimpleSchema({
   name: {
     type: String,
@@ -29,6 +39,11 @@ Rooms.schema = new SimpleSchema({
 
   battleMessages: {
     type: [Rooms.messageSchema],
+    optional: true,
+  },
+
+  battleRatings: {
+    type: [Rooms.rateSchema],
     optional: true,
   },
 

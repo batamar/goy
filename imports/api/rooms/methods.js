@@ -73,8 +73,32 @@ export const sendMessage = new ValidatedMethod({
   },
 
   run({ _id, message }) {
-    const room = Rooms.findOne({ _id });
-
     return Rooms.update({ _id }, { $push: { battleMessages: message } });
+  },
+});
+
+// givePoint
+export const rate = new ValidatedMethod({
+  name: 'rooms.rate',
+
+  validate({ _id, rate }) {
+    check(_id, String);
+    check(rate, Rooms.rateSchema);
+  },
+
+  run({ _id, rate }) {
+    const room = Rooms.findOne({ _id });
+    const battleRatings = room.battleRatings || [];
+
+    const userPoint = battleRatings.find(p => p.userId === rate.userId);
+
+    if (!userPoint) {
+      battleRatings.push(rate);
+    } else {
+      userPoint.userId = rate.userId;
+      userPoint.point = rate.point;
+    }
+
+    return Rooms.update({ _id }, { $set: { battleRatings } });
   },
 });

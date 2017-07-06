@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { composeWithTracker } from 'react-komposer';
 
 import { Rooms } from '/imports/api/rooms/rooms';
-import { addMember, battle, sendMessage } from '/imports/api/rooms/methods';
+import { addMember, battle, sendMessage, rate } from '/imports/api/rooms/methods';
 import RoomDetail from '../components/RoomDetail.jsx';
 
 function composer({ _id }, onData) {
@@ -17,6 +17,7 @@ function composer({ _id }, onData) {
   const userId = Meteor.userId();
   const memberIds = room.memberIds || [];
   const battlingMemberIds = room.battlingMemberIds || [];
+  const battleRatings = room.battleRatings || [];
 
   onData(null, {
     room,
@@ -24,9 +25,14 @@ function composer({ _id }, onData) {
 
     addMember: () => addMember.call({ _id, userId }),
     battle: () => battle.call({ _id, userId }),
+
     sendMessage: (message) =>
       sendMessage.call({ message: { content: message, userId }, _id }),
 
+    rate: (value) =>
+      rate.call({ rate: { point: value, userId }, _id }),
+
+    userRate: battleRatings.find(rate => rate.userId === userId),
     members: Meteor.users.find({ _id: { $in: memberIds } }).fetch(),
     battleMembers: Meteor.users.find({ _id: { $in: battlingMemberIds } }).fetch(),
 
