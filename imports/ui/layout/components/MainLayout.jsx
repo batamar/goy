@@ -1,42 +1,43 @@
-import React, { PropTypes } from 'react';
-
-const propTypes = {
-  content: PropTypes.element,
-  userId: PropTypes.string,
-  loggingIn: PropTypes.bool.isRequired,
-};
+import React from 'react';
 
 class MainLayout extends React.Component {
-  render() {
-    const loginWithFacebook = () => {
-      Meteor.loginWithFacebook({requestPermissions: ['public_profile', 'email']}, (err) => {
-        if (err) {
-          console.log(err)
-        }
-      })
+  renderAuthInfo() {
+    const { user } = this.props;
+
+    if (user._id) {
+      return (
+        <div className="auth-info">
+          <img className="picture" src={user.profile.picture} onClick={this.props.logout} />
+          <span>{user.profile.name}</span>
+        </div>
+      )
     }
 
+    return (
+      <div className="auth-info">
+        <a className="facebook-login" onClick={this.props.loginWithFacebook}>
+          Facebook login
+        </a>
+      </div>
+    )
+  }
+
+  render() {
     return (
       <div className="container">
         <nav className="navbar navbar-default">
           <div className="container-fluid">
-            <div className="navbar-header">
-              <a className="navbar-brand" href="#">Goy</a>
-            </div>
-            <div id="navbar" className="navbar-collapse collapse">
-            </div>
+            <a className="logo" href="/"></a>
+            {this.renderAuthInfo()}
           </div>
         </nav>
 
         <div className="jumbotron">
           {this.props.content}
-          <button onClick={loginWithFacebook}>Facebook</button>
         </div>
       </div>
     );
   }
 }
-
-MainLayout.propTypes = propTypes;
 
 export default MainLayout;
