@@ -1,0 +1,32 @@
+{
+  "name": "finance",
+  "private": true,
+  "scripts": {
+    "start": "meteor --port 3000 --settings settings.json"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "bootstrap": "^3.3.6",
+    "classnames": "^2.2.5",
+    "jquery": "^3.1.1",
+    "lodash": "^4.15.0",
+    "moment": "^2.13.0",
+    "react": "^15.3.1",
+    "react-bootstrap": "^0.30.2",
+    "react-dom": "^15.3.1",
+    "react-komposer": "^1.13.1",
+    "react-mounter": "^1.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel-plugin-transform-object-rest-spread": "^6.19.0",
+    "eslint": "^3.1.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-import-resolver-meteor": "^0.2.4",
+    "eslint-plugin-import": "^1.11.1",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-meteor": "^3.6.0",
+    "eslint-plugin-react": "^5.2.2",
+    "underscore": "^1.8.3"
+  }
+}
