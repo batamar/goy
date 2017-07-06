@@ -6,6 +6,17 @@ class RoomsCollection extends Mongo.Collection {}
 
 export const Rooms = new RoomsCollection('rooms');
 
+
+Rooms.messageSchema = new SimpleSchema({
+  content: {
+    type: String,
+  },
+
+  userId: {
+    type: String,
+  },
+});
+
 Rooms.schema = new SimpleSchema({
   name: {
     type: String,
@@ -13,6 +24,11 @@ Rooms.schema = new SimpleSchema({
 
   battlingMemberIds: {
     type: [String],
+    optional: true,
+  },
+
+  battleMessages: {
+    type: [Rooms.messageSchema],
     optional: true,
   },
 

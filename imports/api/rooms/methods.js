@@ -62,3 +62,19 @@ export const battle = new ValidatedMethod({
     }
   },
 });
+
+// sendMessage
+export const sendMessage = new ValidatedMethod({
+  name: 'rooms.sendMessage',
+
+  validate({ _id, message }) {
+    check(_id, String);
+    check(message, Rooms.messageSchema);
+  },
+
+  run({ _id, message }) {
+    const room = Rooms.findOne({ _id });
+
+    return Rooms.update({ _id }, { $push: { battleMessages: message } });
+  },
+});
