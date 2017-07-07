@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 class MainLayout extends React.Component {
   renderAuthInfo() {
@@ -7,10 +7,16 @@ class MainLayout extends React.Component {
     if (user._id) {
       return (
         <div className="auth-info">
-          <img className="picture" src={user.profile.picture} onClick={this.props.logout} />
+          <img
+            role="presentation"
+            className="picture"
+            src={user.profile.picture}
+            onClick={this.props.logout}
+          />
+
           <span>{user.profile.name}</span>
         </div>
-      )
+      );
     }
 
     return (
@@ -19,7 +25,7 @@ class MainLayout extends React.Component {
           Facebook login
         </a>
       </div>
-    )
+    );
   }
 
   render() {
@@ -42,5 +48,13 @@ class MainLayout extends React.Component {
     );
   }
 }
+
+MainLayout.propTypes = {
+  logout: PropTypes.func,
+  loginWithFacebook: PropTypes.func,
+  user: PropTypes.object,
+  content: PropTypes.object,
+  title: PropTypes.string,
+};
 
 export default MainLayout;

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
+import MainLayout from '/imports/ui/layout/containers/MainLayout';
 
 class RoomDetail extends React.Component {
   constructor(props) {
@@ -197,7 +198,7 @@ class RoomDetail extends React.Component {
     return null;
   }
 
-  render() {
+  renderContent() {
     return (
       <div>
         <div className="leftSide">
@@ -216,6 +217,10 @@ class RoomDetail extends React.Component {
         <div className="clearfix"></div>
       </div>
     );
+  }
+
+  render() {
+    return <MainLayout content={this.renderContent()} title={this.props.room.name} />;
   }
 }
 
