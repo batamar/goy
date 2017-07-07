@@ -30,7 +30,7 @@ class MainLayout extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container"> 
         <nav className="navbar navbar-default">
           <div className="container-fluid">
             <a className="logo" href="/"></a>
@@ -42,7 +42,15 @@ class MainLayout extends React.Component {
         </nav>
 
         <div className="content">
+        <div className="body">
+      <div className="container">
+        <div className="featured-boxes">
+<div className="row">
           {this.props.content}
+</div>
+          </div>
+          </div>
+          </div>
         </div>
       </div>
     );

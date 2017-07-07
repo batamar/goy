@@ -8,17 +8,21 @@ class Home extends React.Component {
     };
 
     return (
-      <div key={room._id} className="room-item" onClick={onRoomClick}>
-        <p>
-          {room.name}
-        </p>
+    <div className="col-md-3 col-sm-6">
+        <div className="featured-box featured-box-secondary featured-box-effect-1 mt-xlg">
+          <div key={room._id} onClick={onRoomClick} className="box-content">
+            <i className="icon-featured fa fa-user"></i>
+            <h4 className="text-uppercase">{room.name}</h4>
+            <p><a href={onRoomClick} className="lnk-primary learn-more">Learn More <i class="fa fa-angle-right"></i></a></p>
+          </div>
+        </div>
       </div>
     );
   }
 
   renderContent() {
     return (
-      <div>
+      <div class="footer">
         {this.props.rooms.map(room => this.renderRoom(room))}
 
         <div className="clearfix" />
