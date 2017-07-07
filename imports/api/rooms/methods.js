@@ -57,7 +57,13 @@ export const battle = new ValidatedMethod({
     const battlingMemberIds = room.battlingMemberIds || [];
 
     if (battlingMemberIds.length < 2) {
-      return Rooms.update({ _id }, { $addToSet: { battlingMemberIds: userId } });
+      return Rooms.update(
+        { _id },
+        {
+          $set: { state: 'started' },
+          $addToSet: { battlingMemberIds: userId },
+        }
+      );
     }
 
     return null;
@@ -116,9 +122,21 @@ export const end = new ValidatedMethod({
   },
 
   run({ _id }) {
+    const room = Rooms.findOne({ _id });
+
+    const wonMemberId = room.battlingMemberIds.find(id => id !== this.userId);
+
     return Rooms.update(
       { _id },
-      { $set: { state: 'ended', battleRatings: [], battlingMemberIds: [], battleMessages: [] } }
+      {
+        $set: {
+          state: 'ended',
+          wonMemberId,
+          battleRatings: [],
+          battlingMemberIds: [],
+          battleMessages: [],
+        },
+      }
     );
   },
 });

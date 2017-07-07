@@ -168,3 +168,10 @@ button.rate.active {
   background-color: #e84c3d;
   color: #fff;
 }
+
+.won-message {
+  text-align: center;
+  margin-top: 200px;
+  font-size: 30px;
+  color: #e84c3d;
+}

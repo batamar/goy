@@ -22,6 +22,7 @@ function composer({ _id }, onData) {
   return onData(null, {
     room,
     messages: room.battleMessages || [],
+    wonMember: Meteor.users.findOne({ _id: room.wonMemberId }),
 
     addMember: () => addMember.call({ _id, userId }),
     battle: () => battle.call({ _id, userId }),

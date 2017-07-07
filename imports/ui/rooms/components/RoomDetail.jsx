@@ -181,6 +181,22 @@ class RoomDetail extends React.Component {
     return null;
   }
 
+  renderWonMessage() {
+    const { room, wonMember } = this.props;
+
+    if (room.state === 'ended' && wonMember._id) {
+      return (
+        <div className="won-message">
+          <p>Winner</p>
+          <img role="presentation" src={wonMember.profile.picture} />
+          <p>{wonMember.profile.name}</p>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     return (
       <div>
@@ -194,6 +210,7 @@ class RoomDetail extends React.Component {
         <div className="rightSide">
           {this.renderMessages()}
           {this.renderMessageInput()}
+          {this.renderWonMessage()}
         </div>
 
         <div className="clearfix"></div>
@@ -210,6 +227,7 @@ RoomDetail.propTypes = {
   rate: PropTypes.func,
   userRates: PropTypes.array,
   room: PropTypes.object,
+  wonMember: PropTypes.object,
   members: PropTypes.array,
   battleMembers: PropTypes.array,
   messages: PropTypes.array,
