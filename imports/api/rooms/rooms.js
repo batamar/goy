@@ -36,6 +36,11 @@ Rooms.schema = new SimpleSchema({
     type: String,
   },
 
+  color: {
+    type: String,
+    optional: true,
+  },
+
   state: {
     type: String,
     optional: true,

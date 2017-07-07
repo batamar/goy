@@ -12,6 +12,7 @@ class RoomForm extends React.Component {
 
     this.props.save({
       name: document.getElementById('name').value,
+      color: document.getElementById('color').value,
     });
   }
 
@@ -19,11 +20,20 @@ class RoomForm extends React.Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input id="name" />
+          <p>
+            <label>Name</label>
+            <input id="name" />
+          </p>
+
+          <p>
+            <label>Color</label>
+            <input id="color" />
+          </p>
+
           <button type="submit">create</button>
         </form>
       </div>
-		);
+    );
   }
 }
 
