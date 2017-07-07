@@ -66,14 +66,18 @@ class RoomDetail extends React.Component {
   }
 
   renderRateButtons(toUserId) {
-    return (
-      <div className="ratings">
-        {this.renderRateButton(1, toUserId)}
-        {this.renderRateButton(2, toUserId)}
-        {this.renderRateButton(3, toUserId)}
-        {this.renderRateButton(4, toUserId)}
-      </div>
-    );
+    if (!this.props.isBattling) {
+      return (
+        <div className="ratings">
+          {this.renderRateButton(1, toUserId)}
+          {this.renderRateButton(2, toUserId)}
+          {this.renderRateButton(3, toUserId)}
+          {this.renderRateButton(4, toUserId)}
+        </div>
+      );
+    }
+
+    return null;
   }
 
   // battle members =============
@@ -134,7 +138,12 @@ class RoomDetail extends React.Component {
 
     if (battlingMemberIds.length < 2) {
       return (
-        <button onClick={this.props.battle}>battle</button>
+        <button
+          className="btn btn-success"
+          onClick={this.props.battle}
+        >
+          Join the battle
+        </button>
       );
     }
 
@@ -160,7 +169,12 @@ class RoomDetail extends React.Component {
   renderSurrenderButton() {
     if (this.props.isBattling) {
       return (
-        <button onClick={this.props.surrender}>Surrender</button>
+        <button
+          className="btn btn-success btn-xs btn-danger surrender"
+          onClick={this.props.surrender}
+        >
+          Surrender
+        </button>
       );
     }
 

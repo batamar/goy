@@ -116,6 +116,9 @@ export const end = new ValidatedMethod({
   },
 
   run({ _id }) {
-    return Rooms.update({ _id }, { $set: { state: 'ended' } });
+    return Rooms.update(
+      { _id },
+      { $set: { state: 'ended', battleRatings: [], battlingMemberIds: [], battleMessages: [] } }
+    );
   },
 });
