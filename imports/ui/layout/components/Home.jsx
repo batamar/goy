@@ -8,7 +8,9 @@ class Home extends React.Component {
 
     return (
       <div key={room._id} className="room-item" onClick={onRoomClick}>
-        {room.name}
+        <p>
+          {room.name}
+        </p>
       </div>
     )
   }

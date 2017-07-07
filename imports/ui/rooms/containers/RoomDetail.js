@@ -6,7 +6,7 @@ import { addMember, battle, sendMessage, rate, end } from '/imports/api/rooms/me
 import RoomDetail from '../components/RoomDetail.jsx';
 
 function composer({ _id }, onData) {
-  const roomHandler = Meteor.subscribe('rooms.detail', _id );
+  const roomHandler = Meteor.subscribe('rooms.detail', _id);
   const usersHandler = Meteor.subscribe('users.list');
 
   if (!roomHandler.ready() || !usersHandler.ready()) {
@@ -19,7 +19,7 @@ function composer({ _id }, onData) {
   const battlingMemberIds = room.battlingMemberIds || [];
   const battleRatings = room.battleRatings || [];
 
-  onData(null, {
+  return onData(null, {
     room,
     messages: room.battleMessages || [],
 
@@ -30,10 +30,10 @@ function composer({ _id }, onData) {
     sendMessage: (message) =>
       sendMessage.call({ message: { content: message, userId }, _id }),
 
-    rate: (value) =>
-      rate.call({ rate: { point: value, userId }, _id }),
+    rate: (value, toUserId) =>
+      rate.call({ rating: { point: value, userId, toUserId }, _id }),
 
-    userRate: battleRatings.find(rate => rate.userId === userId),
+    userRates: battleRatings.filter((r) => r.userId === userId),
     members: Meteor.users.find({ _id: { $in: memberIds } }).fetch(),
     battleMembers: Meteor.users.find({ _id: { $in: battlingMemberIds } }).fetch(),
 

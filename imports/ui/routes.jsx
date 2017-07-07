@@ -14,6 +14,7 @@ FlowRouter.route('/', {
   action() {
     mount(MainLayout, {
       content: <Home />,
+      title: 'Rooms',
     });
   },
 });
@@ -33,6 +34,7 @@ FlowRouter.route('/rooms/detail/:_id', {
   action(params) {
     mount(MainLayout, {
       content: <RoomDetail _id={params._id} />,
+      title: 'Game',
     });
   },
 });

@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Rooms } from './rooms';
@@ -60,6 +59,8 @@ export const battle = new ValidatedMethod({
     if (battlingMemberIds.length < 2) {
       return Rooms.update({ _id }, { $addToSet: { battlingMemberIds: userId } });
     }
+
+    return null;
   },
 });
 
@@ -81,22 +82,25 @@ export const sendMessage = new ValidatedMethod({
 export const rate = new ValidatedMethod({
   name: 'rooms.rate',
 
-  validate({ _id, rate }) {
+  validate({ _id, rating }) {
     check(_id, String);
-    check(rate, Rooms.rateSchema);
+    check(rating, Rooms.rateSchema);
   },
 
-  run({ _id, rate }) {
+  run({ _id, rating }) {
     const room = Rooms.findOne({ _id });
     const battleRatings = room.battleRatings || [];
 
-    const userPoint = battleRatings.find(p => p.userId === rate.userId);
+    const userPoint = battleRatings.find(p =>
+      p.userId === rating.userId && p.toUserId === rating.toUserId
+    );
 
     if (!userPoint) {
-      battleRatings.push(rate);
+      battleRatings.push(rating);
     } else {
-      userPoint.userId = rate.userId;
-      userPoint.point = rate.point;
+      userPoint.userId = rating.userId;
+      userPoint.toUserId = rating.toUserId;
+      userPoint.point = rating.point;
     }
 
     return Rooms.update({ _id }, { $set: { battleRatings } });

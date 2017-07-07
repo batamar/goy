@@ -25,6 +25,10 @@ Rooms.rateSchema = new SimpleSchema({
   userId: {
     type: String,
   },
+
+  toUserId: {
+    type: String,
+  },
 });
 
 Rooms.schema = new SimpleSchema({
@@ -34,6 +38,7 @@ Rooms.schema = new SimpleSchema({
 
   state: {
     type: String,
+    optional: true,
   },
 
   battlingMemberIds: {

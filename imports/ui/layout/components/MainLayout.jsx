@@ -28,11 +28,14 @@ class MainLayout extends React.Component {
         <nav className="navbar navbar-default">
           <div className="container-fluid">
             <a className="logo" href="/"></a>
+            <p className="title">
+              {this.props.title}
+            </p>
             {this.renderAuthInfo()}
           </div>
         </nav>
 
-        <div className="jumbotron">
+        <div className="content">
           {this.props.content}
         </div>
       </div>

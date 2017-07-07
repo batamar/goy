@@ -1,4 +1,5 @@
-import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import React, { PropTypes } from 'react';
 
 class RoomDetail extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class RoomDetail extends React.Component {
   }
 
   onMessage(e) {
-    if (e.key ==='Enter') {
+    if (e.key === 'Enter') {
       this.props.sendMessage(e.target.value);
       this.setState({ message: '' });
     }
@@ -28,50 +29,104 @@ class RoomDetail extends React.Component {
   // members ============
   renderMember(member) {
     return (
-      <div key={member._id}>
-        <img src={member.profile.picture} />
+      <div key={member._id} className="member">
+        <img role="presentation" src={member.profile.picture} />
+        <span>{member.profile.name}</span>
       </div>
-    )
+    );
   }
 
   renderMembers() {
     return (
-      <div>
+      <div className="members">
+        <h4>Members</h4>
         {this.props.members.map(member => this.renderMember(member))}
       </div>
-    )
+    );
+  }
+
+  // rate ============
+  renderRateButton(value, toUserId) {
+    const userRate = this.props.userRates.find(r => r.toUserId === toUserId) || {};
+
+    let className = 'btn btn-default rate';
+
+    if (userRate.point === value) {
+      className = `${className} active`;
+    }
+
+    return (
+      <button
+        className={className}
+        onClick={() => this.props.rate(value, toUserId)}
+      >
+        {value}
+      </button>
+    );
+  }
+
+  renderRateButtons(toUserId) {
+    return (
+      <div className="ratings">
+        {this.renderRateButton(1, toUserId)}
+        {this.renderRateButton(2, toUserId)}
+        {this.renderRateButton(3, toUserId)}
+        {this.renderRateButton(4, toUserId)}
+      </div>
+    );
   }
 
   // battle members =============
   renderBattleMember(member) {
     return (
-      <div key={member._id}>
-        <img src={member.profile.picture} />
+      <div key={member._id} className="battling-member">
+        <img role="presentation" src={member.profile.picture} />
+        <span>{member.profile.name}</span>
+
+        {this.renderRateButtons(member._id)}
       </div>
-    )
+    );
   }
 
   renderBattleMembers() {
     return (
-      <div>
+      <div className="battling-members">
+        <h4>Battling</h4>
         {this.props.battleMembers.map(member => this.renderBattleMember(member))}
       </div>
-    )
+    );
   }
 
   // messages ================
-  renderMessage(message, index) {
+  renderMessage(message, index, firstUserId) {
+    const user = Meteor.users.findOne({ _id: message.userId });
+
+    if (user._id === firstUserId) {
+      return (
+        <div key={index} className="message right">
+          <span className="text">{message.content}</span>
+          <img role="presentation" src={user.profile.picture} />
+        </div>
+      );
+    }
+
     return (
-      <div key={index}>{message.content}</div>
-    )
+      <div key={index} className="message left">
+        <img role="presentation" src={user.profile.picture} />
+        <span className="text">{message.content}</span>
+      </div>
+    );
   }
 
   renderMessages() {
+    const messages = this.props.messages;
+    const firstUserId = messages.length > 0 ? messages[0].userId : null;
+
     return (
       <div>
-        {this.props.messages.map((m, i) => this.renderMessage(m, i))}
+        {messages.map((m, i) => this.renderMessage(m, i, firstUserId))}
       </div>
-    )
+    );
   }
 
   renderBattleButton() {
@@ -80,61 +135,71 @@ class RoomDetail extends React.Component {
     if (battlingMemberIds.length < 2) {
       return (
         <button onClick={this.props.battle}>battle</button>
-      )
+      );
     }
+
+    return null;
   }
 
   renderMessageInput() {
     if (this.props.isBattling) {
       return (
         <input
+          className="message-input"
+          placeholder="Type a message ..."
           onChange={this.onInputChange}
           onKeyPress={this.onMessage}
           value={this.state.message}
         />
-      )
+      );
     }
-  }
 
-  // rate ============
-  renderRateButton(value) {
-    const userRate = this.props.userRate || {};
-
-    if (userRate.point !== value) {
-      return <button onClick={() => this.props.rate(value)}>{value}</button>
-    }
-  }
-
-  renderRateButtons() {
-    return (
-      <div>
-        {this.renderRateButton(1)}
-        {this.renderRateButton(2)}
-        {this.renderRateButton(3)}
-        {this.renderRateButton(4)}
-      </div>
-    )
+    return null;
   }
 
   renderSurrenderButton() {
     if (this.props.isBattling) {
-      return <button onClick={this.props.surrender}>Surrender</button>
+      return (
+        <button onClick={this.props.surrender}>Surrender</button>
+      );
     }
+
+    return null;
   }
 
   render() {
     return (
       <div>
-        {this.renderMembers()}
-        {this.renderBattleButton()}
-        {this.renderBattleMembers()}
-        {this.renderMessages()}
-        {this.renderMessageInput()}
-        {this.renderRateButtons()}
-        {this.renderSurrenderButton()}
+        <div className="leftSide">
+          {this.renderBattleButton()}
+          {this.renderBattleMembers()}
+          {this.renderSurrenderButton()}
+          {this.renderMembers()}
+        </div>
+
+        <div className="rightSide">
+          {this.renderMessages()}
+          {this.renderMessageInput()}
+        </div>
+
+        <div className="clearfix"></div>
       </div>
-		);
+    );
   }
 }
+
+RoomDetail.propTypes = {
+  addMember: PropTypes.func,
+  sendMessage: PropTypes.func,
+  battle: PropTypes.func,
+  surrender: PropTypes.func,
+  rate: PropTypes.func,
+  userRates: PropTypes.array,
+  room: PropTypes.object,
+  members: PropTypes.array,
+  battleMembers: PropTypes.array,
+  messages: PropTypes.array,
+  isBattling: PropTypes.bool,
+};
 
 export default RoomDetail;
